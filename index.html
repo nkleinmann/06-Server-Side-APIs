@@ -1,24 +1,55 @@
 <!DOCTYPE html>
 <html lang="en-us">
 
-    <head>
-        <meta charset="UTF -8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Weather Dashboard</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="style.css">
-        
-    </head>
+<head>
 
-    <body>
-        <header class="row bg-dark">
-            <div class="col-12">
-                <h1 class="text-center">Weather Dashboard</h1>
+    <meta charset="UTF -8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <!--Font awesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <!-- Compiled and minified CSS for Materialize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--CSS style sheet-->
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="row bg-dark">
+        <div class="col-12">
+            <h1 class="text-center">Weather Dashboard</h1>
+        </div>
+    </header>
+
+    <!-- Search bar-->
+    <div class="row">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s6">
+                    <h3>Search for a city:</h3>
+                    <input placeholder="City" id="inputCity" type="text" class="validate">
+                    <a class="waves-effect waves-light btn-large searchBtn"><i class="fas fa-search"></i></a>
+                    <div class="cityList"> </div>
+                </div>
+                <div class=" col s6 oneCity"> </div>
             </div>
-        </header>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="script.js"></script>
-    </body>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col s6 dayForecast"> </div>
+    </div>
+
+    <!--jQuery-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--Moment-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <!-- Compiled and minified JavaScript for Materialize-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="script.js"></script>
+</body>
 
 </html>

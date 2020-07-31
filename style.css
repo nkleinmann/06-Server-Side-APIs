@@ -1,4 +1,11 @@
+
+/*header*/
 h1 {
     color: white;
     padding: 10px;
+}
+
+/*Search box*/
+div.input-field {
+    padding: 50px;
 }
