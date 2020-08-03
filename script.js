@@ -1,7 +1,7 @@
 $(function () {
     $(".searchBtn").on("click", function () {
         let cityName = $("#inputCity").val();
-        let currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=25d3fdfe342a19e8d55725db62d19795"
+        let currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=25d3fdfe342a19e8d55725db62d19795";
         addCities(cityName);
 
         $.ajax({

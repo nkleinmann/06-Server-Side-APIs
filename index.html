@@ -20,28 +20,47 @@
 
     <!-- Header -->
     <header class="row bg-dark">
-        <div class="col-12">
-            <h1 class="text-center">Weather Dashboard</h1>
+        <div class="col s12 header">
+            <h1 class="center-align">Weather Dashboard</h1>
         </div>
     </header>
 
-    <!-- Search bar-->
+
     <div class="row">
-        <form class="col s12">
-            <div class="row">
-                <div class="input-field col s6">
-                    <h3>Search for a city:</h3>
-                    <input placeholder="City" id="inputCity" type="text" class="validate">
-                    <a class="waves-effect waves-light btn-large searchBtn"><i class="fas fa-search"></i></a>
-                    <div class="cityList"> </div>
+        <section class="col s4">
+            <form>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <h3>Search for a city:</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col s6 textInput">
+                            <input placeholder="City" id="inputCity" type="text" class="validate">
+                        </div>
+                        <div class="col s6">
+                            <a class="waves-effect waves-light btn-large searchBtn material-icons suffix"><i
+                                    class="fas fa-search"></i></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--List of cities searched-->
+                        <div class="cityList col s12"> <p>List of cities</p></div>
+                    </div>
                 </div>
-                <div class=" col s6 oneCity"> </div>
+            </form>
+        </section>
+        <section class="col s8">
+            <div class="row">
+                <!--Daily Forcast-->
+                <div class="col s12 dayForecast"> <h1>1 day</h1></div>
             </div>
-        </form>
+            <div class="row">
+                <div class="col s12 fiveDayForecast"><h1>5 day </h1></div>
+            </div>
+        </section>
+
     </div>
-    <div class="row">
-        <div class="col s6 dayForecast"> </div>
-    </div>
+    
 
     <!--jQuery-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -1,11 +1,20 @@
 
 /*header*/
+div.header {
+    background-color: black;
+}
+
 h1 {
     color: white;
     padding: 10px;
+    background-color: black;
 }
 
 /*Search box*/
+#inputCity {
+    margin: 10px;
+}
+
 div.input-field {
     padding: 50px;
 }
