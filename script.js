@@ -1,6 +1,8 @@
 $(function () {
 
 let cityName = "";
+let todaysDate = moment().format("MMM Do YYYY");
+console.log(todaysDate);
 
 //Populates list of 5 most recent cities in local storage on screen
 getCitiesLocalStorage();
@@ -10,7 +12,12 @@ getCitiesLocalStorage();
 
     $(".searchBtn").on("click", function (event) {
         event.preventDefault();
+        let blank = "";
         cityName = $("#inputCity").val();
+
+        // clears text in input spot when search button is clicked
+        $("#inputCity").val(blank);
+
         let currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=25d3fdfe342a19e8d55725db62d19795";
 
         addCities(cityName);
@@ -57,14 +64,9 @@ getCitiesLocalStorage();
         let listItem = $("<li>")
         $(".listOfCities").append(listItem);
         listItem.html(cityName);
-        //adds most recent city name to the dashboard
-        $("h3.searchedCity").html(cityName);
+        //adds most recent city name and today's date to the dashboard
+        $("h3.searchedCity").html(`${cityName} &nbsp (${todaysDate})`);
         
-
-
-        // need to add from local storage when they reload the page 
-        // let $divCityList = $(".cityList");
-        // $divCityList.append()
     }
 
     function getCitiesLocalStorage() {
@@ -83,17 +85,5 @@ getCitiesLocalStorage();
 
         }
     }
-
-//     // loads city list from local storage and displays on screen
-//     function loadLs() {
-//         let cityListLS = JSON.parse(localStorage.getItem("dailyPlan"));
-//         if (cityListLS!== null) {
-
-            
-//         }
-//     }
-
-//     // calls function to load local storage and displays on the screen
-// loadLs();
     
 })
