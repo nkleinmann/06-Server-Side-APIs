@@ -1,8 +1,7 @@
 $(function () {
 
 let cityName = "";
-let todaysDate = moment().format("MMM Do YYYY");
-console.log(todaysDate);
+let todaysDate = moment().format("L");
 
 //Populates list of 5 most recent cities in local storage on screen
 getCitiesLocalStorage();
@@ -10,6 +9,7 @@ getCitiesLocalStorage();
 
 
 
+//When the search button is clicked, call from APIs 
     $(".searchBtn").on("click", function (event) {
         event.preventDefault();
         let blank = "";
@@ -61,7 +61,7 @@ getCitiesLocalStorage();
         localStorage.setItem("cityNames", JSON.stringify(namesCity));
 
         //adds list item to unordered list and adds city names to screen
-        let listItem = $("<li>")
+        let listItem = $("<li class='card'>")
         $(".listOfCities").append(listItem);
         listItem.html(cityName);
         //adds most recent city name and today's date to the dashboard
@@ -69,6 +69,7 @@ getCitiesLocalStorage();
         
     }
 
+    //Gets 5 most recent searches from local storage and shows on screen
     function getCitiesLocalStorage() {
         infoArray = JSON.parse(localStorage.getItem("cityNames"));
         if (infoArray !== null) {
@@ -76,7 +77,7 @@ getCitiesLocalStorage();
 
             for (let i = infoArray.length-5; i < infoArray.length; i++) {
 
-            let LSlistItem = $("<li>")
+            let LSlistItem = $("<li class='card'>")
                 $(".listOfCities").append(LSlistItem);
                 LSlistItem.html(infoArray[i]);
                 console.log(infoArray[i])
