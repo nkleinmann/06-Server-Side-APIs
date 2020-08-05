@@ -1,7 +1,12 @@
 $(function () {
-    $(".searchBtn").on("click", function () {
-        let cityName = $("#inputCity").val();
+
+let cityName = "";
+    $(".searchBtn").on("click", function (event) {
+        event.preventDefault();
+        cityName = $("#inputCity").val();
         let currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=25d3fdfe342a19e8d55725db62d19795";
+        let infoArray = [];
+
         addCities(cityName);
 
         $.ajax({
@@ -36,10 +41,24 @@ $(function () {
         namesCity.push(citySearch);
         // setting item from array to local storage
         localStorage.setItem("cityNames", JSON.stringify(namesCity));
+        getLocalStorage();
+        let listItem = $("<li>")
+        $(".listOfCities").append(listItem);
+        listItem.html(cityName);
+        $("h3.searchedCity").html(cityName);
+        
 
 
         // need to add from local storage when they reload the page 
         // let $divCityList = $(".cityList");
         // $divCityList.append()
+    }
+
+    function getLocalStorage() {
+        infoArray = JSON.parse(localStorage.getItem("cityNames"));
+        if (infoArray !== null) {
+            console.log(infoArray);
+
+        }
     }
 })
