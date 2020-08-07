@@ -12,6 +12,7 @@ $(function () {
     let windSpeed = "";
     let icon = "";
     let uv = "";
+    let uvColor = "";
     let todaysDate = moment().format("L");
 
     //Populates list of 5 most recent cities in local storage on screen
@@ -75,9 +76,11 @@ $(function () {
                     .then(function (response) {
                         console.log(response);
 
-                        //gets UV index
+                        //gets UV index and color
                         uv = response.current.uvi;
+                        uvColor = uviColors(uv);
                         uvIndexSection.html(uv);
+                        uvIndexSection.attr("style", `background-color: ${uvColor};`)
 
                     })
             })
@@ -107,6 +110,23 @@ $(function () {
         //adds most recent city name and today's date to the dashboard
         mainCity.html(`${cityName} &nbsp (${todaysDate})`);
 
+    }
+
+    //sets background color for uv
+    function uviColors(uv) {
+        if (uv <3) {
+            return "green";
+        }
+        else if (uv >=3 && uv <6) {
+            return "yellow";
+        }
+        else if (uv >=6 && uv < 8) {
+            return "orange";
+        }
+        else if (uv >=8 && uv <=10) {
+            return "red"
+        }
+        else return "purple";
     }
 
     //Gets 5 most recent searches from local storage and shows on screen
