@@ -1,15 +1,18 @@
 $(function () {
 
-let cityName = "";
-let todaysDate = moment().format("L");
+    const listofCities = $(".listOfCities");
+    const mainCity = $("h3.searchedCity");
+    let cityName = "";
+    let temp = "";
+    let todaysDate = moment().format("L");
 
-//Populates list of 5 most recent cities in local storage on screen
-getCitiesLocalStorage();
+    //Populates list of 5 most recent cities in local storage on screen
+    getCitiesLocalStorage();
 
 
 
 
-//When the search button is clicked, call from APIs 
+    //When the search button is clicked, call from APIs 
     $(".searchBtn").on("click", function (event) {
         event.preventDefault();
         let blank = "";
@@ -20,7 +23,7 @@ getCitiesLocalStorage();
 
         let currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=25d3fdfe342a19e8d55725db62d19795";
 
-        addCities(cityName);
+        addCitiesLS(cityName);
 
         $.ajax({
             url: currentWeatherURL,
@@ -30,6 +33,17 @@ getCitiesLocalStorage();
                 console.log(response);
                 let lat = response.coord.lat;
                 let lon = response.coord.lon;
+
+                //gets temperatur
+                temp = response.main.temp 
+                temp = Math.floor((temp-273.15)*9/5 + 32);
+
+                //gets humidity
+
+                //gets Wind Speed
+
+                //gets weather icon
+                
 
                 // for the UV API
                 let uvURL = `https://api.openweathermap.org/data/2.5/uvi?appid=25d3fdfe342a19e8d55725db62d19795&lat=${lat}&lon=${lon}`;
@@ -45,14 +59,14 @@ getCitiesLocalStorage();
     });
 
     //This button clears local storage
-    $(".clearBtn").on("click", function() {
+    $(".clearBtn").on("click", function () {
         localStorage.clear();
     });
 
     // add cities to page
-    function addCities(citySearch) {
-        //adding to local storage
-        // taking key to get items
+    function addCitiesLS(citySearch) {
+    
+        // adding to local storage, taking key to get items
         let namesCity = localStorage.getItem("cityNames");
         // taking string from local storage and putting back in original form
         namesCity = JSON.parse(namesCity) || [];
@@ -62,11 +76,11 @@ getCitiesLocalStorage();
 
         //adds list item to unordered list and adds city names to screen
         let listItem = $("<li class='card'>")
-        $(".listOfCities").append(listItem);
+        listofCities.append(listItem);
         listItem.html(cityName);
         //adds most recent city name and today's date to the dashboard
-        $("h3.searchedCity").html(`${cityName} &nbsp (${todaysDate})`);
-        
+        mainCity.html(`${cityName} &nbsp (${todaysDate})`);
+
     }
 
     //Gets 5 most recent searches from local storage and shows on screen
@@ -75,10 +89,10 @@ getCitiesLocalStorage();
         if (infoArray !== null) {
             console.log(infoArray);
 
-            for (let i = infoArray.length-5; i < infoArray.length; i++) {
+            for (let i = infoArray.length - 5; i < infoArray.length; i++) {
 
-            let LSlistItem = $("<li class='card'>")
-                $(".listOfCities").append(LSlistItem);
+                let LSlistItem = $("<li class='card'>")
+                listofCities.append(LSlistItem);
                 LSlistItem.html(infoArray[i]);
                 console.log(infoArray[i])
 
@@ -86,5 +100,5 @@ getCitiesLocalStorage();
 
         }
     }
-    
+
 })
