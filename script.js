@@ -2,8 +2,16 @@ $(function () {
 
     const listofCities = $(".listOfCities");
     const mainCity = $("h3.searchedCity");
+    const tempSection = $(".temp");
+    const humiditySection = $(".humidity");
+    const windSpeedSection = $(".windSpeed");
+    const uvIndexSection = $(".uvIndex");
     let cityName = "";
     let temp = "";
+    let humidity = "";
+    let windSpeed = "";
+    let icon = "";
+    let uv = "";
     let todaysDate = moment().format("L");
 
     //Populates list of 5 most recent cities in local storage on screen
@@ -35,24 +43,42 @@ $(function () {
                 let lon = response.coord.lon;
 
                 //gets temperatur
-                temp = response.main.temp 
+                temp = response.main.temp; 
                 temp = Math.floor((temp-273.15)*9/5 + 32);
+                temp = `${temp}`;
+                tempSection.html(temp);
 
                 //gets humidity
+                humidity = response.main.humidity;
+                humidity = `${humidity} %`;
+                humiditySection.html(humidity);
 
+;
                 //gets Wind Speed
+                windSpeed = response.wind.speed;
+                windSpeed = `${windSpeed} mph`;
+                windSpeedSection.html(windSpeed);
 
                 //gets weather icon
+                icon = response.weather[0].icon;
+                $(".iconWeather").attr("src", `http://openweathermap.org/img/wn/${icon}.png`).attr("alt", response.weather[0].description);
                 
 
                 // for the UV API
-                let uvURL = `https://api.openweathermap.org/data/2.5/uvi?appid=25d3fdfe342a19e8d55725db62d19795&lat=${lat}&lon=${lon}`;
+                let uvURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&
+                exclude=&appid=25d3fdfe342a19e8d55725db62d19795`;
+                // `https://api.openweathermap.org/data/2.5/uvi?appid=25d3fdfe342a19e8d55725db62d19795&lat=${lat}&lon=${lon}`;
                 $.ajax({
                     url: uvURL,
                     method: "GET"
                 })
                     .then(function (response) {
                         console.log(response);
+
+                        //gets UV index
+                        uv = response.current.uvi;
+                        uvIndexSection.html(uv);
+
                     })
             })
 
