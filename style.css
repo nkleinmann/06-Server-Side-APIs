@@ -5,6 +5,10 @@ div.header {
     margin-bottom: 0px;
 }
 
+div.card-panel {
+    color:white;
+    margin: 10px;
+}
 
 h1 {
     color: white;

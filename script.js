@@ -12,6 +12,7 @@ $(function () {
 
     let weatherInfo = [];
     let weatherInfoObject = {};
+    let namesCity=[];
 
     let cityName = "";
     let icon = "";
@@ -51,6 +52,13 @@ $(function () {
     //When the search button is clicked, call from APIs 
     $(".searchBtn").on("click", function (event) {
         event.preventDefault();
+        
+            ajaxCalls();
+            
+
+    });
+
+    function ajaxCalls() {
         let blank = "";
         cityName = $("#inputCity").val();
 
@@ -117,10 +125,7 @@ $(function () {
                     addWeatherInfoLS();                     
                     
             });
-            
-            
-
-    });
+    }
 
     function addWeatherInfoLS() {
         weatherInfoObject = {
@@ -160,7 +165,7 @@ $(function () {
     
         
         // adding to local storage, taking key to get items
-        let namesCity = localStorage.getItem("cityNames");
+        namesCity = localStorage.getItem("cityNames");
         // taking string from local storage and putting back in original form
         namesCity = JSON.parse(namesCity) || [];
         namesCity.push(citySearch);
@@ -220,6 +225,11 @@ $(function () {
     }
 
     function repopulateInfoToScreen() {
+
+        if (weatherInfo[0]) {
+            // cityName = namesCity[namesCity.length-1];
+            // ajaxCalls();
+
         mainCity.html(weatherInfo[weatherInfo.length-1].city);
         tempSection.html(weatherInfo[weatherInfo.length-1].temperature);
         humiditySection.html(weatherInfo[weatherInfo.length-1].humidityWeather);
@@ -229,6 +239,32 @@ $(function () {
         uvColor = uviColors(uv);
         uvIndexSection.html(uv);
         uvIndexSection.attr("style", `background-color: ${uvColor};`);
+        // ajaxUV();
+        }
+        else {
+            mainCity.html("Please search for a city.")
+        }
+        
+    }
+
+    function ajaxUV() {
+        $.ajax({
+            url: uvURL,
+            method: "GET"
+        })
+            .then(function (response) {
+                console.log(response);
+
+                //gets UV index and color
+                uv = response.current.uvi;
+                uvColor = uviColors(uv);
+                uvIndexSection.html(uv);
+                uvIndexSection.attr("style", `background-color: ${uvColor};`);
+
+                // dailyForecastIcon = response.daily[i].weather[0].icon; 
+                // iconDescription = response.daily[i].weather[i].description;
+                // icon5Day = iconURL.src("http://openweathermap.org/img/wn/${dailyForecastIcon}.png");
+            });
     }
 
 })
