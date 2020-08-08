@@ -54,11 +54,10 @@ $(function () {
         event.preventDefault();
         
             ajaxCalls();
-            
 
     });
 
-    function ajaxCalls() {
+    function ajaxCalls(response) {
         let blank = "";
         cityName = $("#inputCity").val();
 
@@ -117,9 +116,13 @@ $(function () {
                         uvIndexSection.html(uv);
                         uvIndexSection.attr("style", `background-color: ${uvColor};`);
 
-                        dailyForecastIcon = response.daily[i].weather[0].icon; 
-                        iconDescription = response.daily[i].weather[i].description;
-                        icon5Day = iconURL.src("http://openweathermap.org/img/wn/${dailyForecastIcon}.png");
+                        for (let i=0; i<5; i++) {
+                            dailyForecastIcon = response.daily[i].weather[0].icon; 
+                            iconDescription = response.daily[i].weather[0].description;
+                            icon5Day = iconURL.src("http://openweathermap.org/img/wn/${dailyForecastIcon}.png");
+                            // need to create image in each card, find right section and add attr like on line 99
+                        }     
+
                     });
 
                     addWeatherInfoLS();                     
