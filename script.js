@@ -1,24 +1,51 @@
 $(function () {
 
+    //declaration of variables
     const listofCities = $(".listOfCities");
     const mainCity = $("h3.searchedCity");
     const tempSection = $(".temp");
     const humiditySection = $(".humidity");
     const windSpeedSection = $(".windSpeed");
     const uvIndexSection = $(".uvIndex");
+    // const fiveDayForecast = $(".fiveDayForecast");
+    // const fiveDayIcon = $(".fiveDayIcon")
+
+    let weatherInfo = [];
+    let weatherInfoObject = {};
+
     let cityName = "";
+    let icon = "";
+    let iconDescription = "";
     let temp = "";
     let humidity = "";
     let windSpeed = "";
-    let icon = "";
     let uv = "";
+
     let uvColor = "";
+    let dailyForecastIcon = "";
+    let icon5Day = "";
     let todaysDate = moment().format("L");
 
     //Populates list of 5 most recent cities in local storage on screen
     getCitiesLocalStorage();
+    getLocalStorage();
 
+    //when screen is refreshed, show weather info from last search
+    repopulateInfoToScreen();
+    
 
+    // //Populates 5 day weather forecast on screen
+    // dailyWeather();
+
+    // function dailyWeather() {
+    //     //gets daily weather
+    //     for (let i = 0; i < 6; i++) {
+    //       fiveDayForecast.value(i+1).append($("<img class='fiveDayIcon card'>"));
+    //       fiveDayIcon.attr("src", `http://openweathermap.org/img/wn/${dailyForecastIcon}.png`).attr("alt", iconDescription);  
+    //       console.log(i);
+    //   }
+
+//   }
 
 
     //When the search button is clicked, call from APIs 
@@ -80,21 +107,58 @@ $(function () {
                         uv = response.current.uvi;
                         uvColor = uviColors(uv);
                         uvIndexSection.html(uv);
-                        uvIndexSection.attr("style", `background-color: ${uvColor};`)
+                        uvIndexSection.attr("style", `background-color: ${uvColor};`);
 
-                    })
-            })
+                        dailyForecastIcon = response.daily[i].weather[0].icon; 
+                        iconDescription = response.daily[i].weather[i].description;
+                        icon5Day = iconURL.src("http://openweathermap.org/img/wn/${dailyForecastIcon}.png");
+                    });
+
+                    addWeatherInfoLS();                     
+                    
+            });
+            
+            
 
     });
+
+    function addWeatherInfoLS() {
+        weatherInfoObject = {
+            city: cityName,
+            iconWeather: icon,
+            temperature: temp,
+            humidityWeather: humidity,
+            windSpeedWeather: windSpeed,
+            uvi: uv 
+        }
+        // console.log(weatherInfoObject);
+        weatherInfo.push(weatherInfoObject);
+        // console.log(weatherInfo);
+        localStorage.setItem("weatherInfo", JSON.stringify(weatherInfo));
+    }
+
+    function getLocalStorage() {
+       
+        weatherInfo = JSON.parse(localStorage.getItem("weatherInfo"));
+        console.log(weatherInfo);
+
+        if (weatherInfo === null) { 
+            weatherInfo = [];
+        }
+    }
+
+
 
     //This button clears local storage
     $(".clearBtn").on("click", function () {
         localStorage.clear();
     });
 
+    let townNum=0;
     // add cities to page
     function addCitiesLS(citySearch) {
     
+        
         // adding to local storage, taking key to get items
         let namesCity = localStorage.getItem("cityNames");
         // taking string from local storage and putting back in original form
@@ -104,13 +168,23 @@ $(function () {
         localStorage.setItem("cityNames", JSON.stringify(namesCity));
 
         //adds list item to unordered list and adds city names to screen
-        let listItem = $("<li class='card'>")
+        let listItem = $("<li class='card cityNameinList'>");
+        //adds data-info attribute
+        listItem.attr('data-info', townNum);
+        console.log(townNum);
+        townNum++;
+
         listofCities.append(listItem);
         listItem.html(cityName);
         //adds most recent city name and today's date to the dashboard
         mainCity.html(`${cityName} &nbsp (${todaysDate})`);
 
     }
+
+    // when city in list clicked, populate most recent search on screen
+    $(".cityNameinList").on("click", function() {
+        console.log("Hi");
+    })
 
     //sets background color for uv
     function uviColors(uv) {
@@ -133,18 +207,28 @@ $(function () {
     function getCitiesLocalStorage() {
         infoArray = JSON.parse(localStorage.getItem("cityNames"));
         if (infoArray !== null) {
-            console.log(infoArray);
 
             for (let i = infoArray.length - 5; i < infoArray.length; i++) {
 
                 let LSlistItem = $("<li class='card'>")
                 listofCities.append(LSlistItem);
                 LSlistItem.html(infoArray[i]);
-                console.log(infoArray[i])
 
             }
 
         }
+    }
+
+    function repopulateInfoToScreen() {
+        mainCity.html(weatherInfo[weatherInfo.length-1].city);
+        tempSection.html(weatherInfo[weatherInfo.length-1].temperature);
+        humiditySection.html(weatherInfo[weatherInfo.length-1].humidityWeather);
+        windSpeedSection.html(weatherInfo[weatherInfo.length-1].windSpeedWeather);
+        // $(".iconWeather").attr("src", `http://openweathermap.org/img/wn/${icon}.png`).attr("alt", iconDescription);
+        uvIndexSection.html(weatherInfo[weatherInfo.length-1].uvi);
+        uvColor = uviColors(uv);
+        uvIndexSection.html(uv);
+        uvIndexSection.attr("style", `background-color: ${uvColor};`);
     }
 
 })
