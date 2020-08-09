@@ -11,21 +11,21 @@ $(function () {
     // const fiveDayIcon = $(".fiveDayIcon")
 
     let townNum=0;
-    let weatherInfo = [];
+    // let weatherInfo = [];
     let namesCity=[];
     let blank = "";
 
     let cityName = "";
     let icon = "";
-    let iconDescription = "";
+    // let iconDescription = "";
     let temp = "";
     let humidity = "";
     let windSpeed = "";
     let uv = "";
 
     let uvColor = "";
-    let dailyForecastIcon = "";
-    let icon5Day = "";
+    // let dailyForecastIcon = "";
+    // let icon5Day = "";
     let todaysDate = moment().format("L");
 
     //Populates list of 5 most recent cities in local storage on screen
@@ -120,11 +120,16 @@ $(function () {
                         uvIndexSection.html(uv);
                         uvIndexSection.attr("style", `background-color: ${uvColor};`);
 
+                        //adding 5 day forecast to screen
                         for (let i=1; i<6; i++) {
-                            dailyForecastIcon = response.daily[i].weather[0].icon; 
-                            iconDescription = response.daily[i].weather[0].description;
-                            icon5Day = iconURL.src("http://openweathermap.org/img/wn/${dailyForecastIcon}.png");
-                            // need to create image in each card, find right section and add attr like on line 99
+                            $(`span.date${i}`).text(moment().add(i-1, 'd').format('l'));
+                            let icon5 = response.daily[i-1].weather[0].icon;
+                            let description5 = response.daily[i-1].weather[0].description;
+                            $(`img.icon${i}`).attr('src', `http://openweathermap.org/img/wn/${icon5}.png`).attr("alt", description5);
+                            let temp5 = response.daily[i-1].temp.day; 
+                            $(`span.temperature${i}`).text(Math.round((temp5-273.15)*9/5 + 32));
+                            let humidity5 = response.daily[i-1].humidity
+                            $(`span.humidity${i}`).text(humidity5);
                         }     
 
                     });                    
@@ -210,27 +215,21 @@ $(function () {
                         uvIndexSection.html(uv);
                         uvIndexSection.attr("style", `background-color: ${uvColor};`);
 
+                        //adding 5 day forecast to screen
                         for (let i=1; i<6; i++) {
-                            dailyForecastIcon = response.daily[i].weather[0].icon; 
-                            iconDescription = response.daily[i].weather[0].description;
-                            icon5Day = iconURL.src("http://openweathermap.org/img/wn/${dailyForecastIcon}.png");
-                            // need to create image in each card, find right section and add attr like on line 99
+                            $(`span.date${i}`).text(moment().add(i-1, 'd').format('l'));
+                            let icon5 = response.daily[i-1].weather[0].icon;
+                            let description5 = response.daily[i-1].weather[0].description;
+                            $(`img.icon${i}`).attr('src', `http://openweathermap.org/img/wn/${icon5}.png`).attr("alt", description5);
+                            let temp5 = response.daily[i-1].temp.day; 
+                            $(`span.temperature${i}`).text(Math.round((temp5-273.15)*9/5 + 32));
+                            let humidity5 = response.daily[i-1].humidity
+                            $(`span.humidity${i}`).text(humidity5);
                         }     
 
                     });                    
             });
     }
-    // function getLocalStorage() {
-       
-    //     weatherInfo = JSON.parse(localStorage.getItem("weatherInfo"));
-    //     console.log(weatherInfo);
-
-    //     if (weatherInfo === null) { 
-    //         weatherInfo = [];
-    //     }
-    // }
-
-
 
     //This button clears local storage
     $(".clearBtn").on("click", function () {
@@ -289,6 +288,7 @@ $(function () {
 
     //Gets 5 most recent searches from local storage and shows on screen
     function getCitiesLocalStorage() {
+        let infoArray = [];
         infoArray = JSON.parse(localStorage.getItem("cityNames"));
         if (infoArray !== null) {
 
