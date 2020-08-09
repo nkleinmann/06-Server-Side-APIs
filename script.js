@@ -10,9 +10,10 @@ $(function () {
     // const fiveDayForecast = $(".fiveDayForecast");
     // const fiveDayIcon = $(".fiveDayIcon")
 
+    let townNum=0;
     let weatherInfo = [];
-    let weatherInfoObject = {};
     let namesCity=[];
+    let blank = "";
 
     let cityName = "";
     let icon = "";
@@ -29,10 +30,13 @@ $(function () {
 
     //Populates list of 5 most recent cities in local storage on screen
     getCitiesLocalStorage();
-    getLocalStorage();
+    // getLocalStorage();
 
     //when screen is refreshed, show weather info from last search
-    repopulateInfoToScreen();
+    // repopulateInfoToScreen();
+    
+    
+    
     
 
     // //Populates 5 day weather forecast on screen
@@ -57,8 +61,8 @@ $(function () {
 
     });
 
-    function ajaxCalls(response) {
-        let blank = "";
+    function ajaxCalls() {
+        blank = "";
         cityName = $("#inputCity").val();
 
         // clears text in input spot when search button is clicked
@@ -116,44 +120,115 @@ $(function () {
                         uvIndexSection.html(uv);
                         uvIndexSection.attr("style", `background-color: ${uvColor};`);
 
-                        for (let i=0; i<5; i++) {
+                        for (let i=1; i<6; i++) {
                             dailyForecastIcon = response.daily[i].weather[0].icon; 
                             iconDescription = response.daily[i].weather[0].description;
                             icon5Day = iconURL.src("http://openweathermap.org/img/wn/${dailyForecastIcon}.png");
                             // need to create image in each card, find right section and add attr like on line 99
                         }     
 
-                    });
-
-                    addWeatherInfoLS();                     
-                    
+                    });                    
             });
     }
 
-    function addWeatherInfoLS() {
-        weatherInfoObject = {
-            city: cityName,
-            iconWeather: icon,
-            temperature: temp,
-            humidityWeather: humidity,
-            windSpeedWeather: windSpeed,
-            uvi: uv 
-        }
-        // console.log(weatherInfoObject);
-        weatherInfo.push(weatherInfoObject);
-        // console.log(weatherInfo);
-        localStorage.setItem("weatherInfo", JSON.stringify(weatherInfo));
-    }
+    // function addWeatherInfoLS() {
+    //     weatherInfoObject = {
+    //         city: cityName,
+    //         iconWeather: icon,
+    //         temperature: temp,
+    //         humidityWeather: humidity,
+    //         windSpeedWeather: windSpeed,
+    //         uvi: uv 
+    //     }
+    //     // console.log(weatherInfoObject);
+    //     weatherInfo.push(weatherInfoObject);
+    //     // console.log(weatherInfo);
+    //     localStorage.setItem("weatherInfo", JSON.stringify(weatherInfo));
+    // }
+    function ajaxCallsReload() {
+        blank = "";
+        // cityName = $("#inputCity").val();
 
-    function getLocalStorage() {
+        // clears text in input spot when search button is clicked
+        $("#inputCity").val(blank);
+
+        let currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=25d3fdfe342a19e8d55725db62d19795";
+
+        // // adding to local storage, taking key to get items
+        //  namesCity = localStorage.getItem("cityNames");
+        //  // taking string from local storage and putting back in original form
+        //  namesCity = JSON.parse(namesCity) || [];
+        //  namesCity.push(citySearch);
+        //  // setting item from array to local storage
+        //  localStorage.setItem("cityNames", JSON.stringify(namesCity));
+
+        $.ajax({
+            url: currentWeatherURL,
+            method: "GET"
+        })
+            .then(function (response) {
+                console.log(response);
+                let lat = response.coord.lat;
+                let lon = response.coord.lon;
+
+                //gets temperatur
+                temp = response.main.temp; 
+                temp = Math.floor((temp-273.15)*9/5 + 32);
+                temp = `${temp}`;
+                tempSection.html(temp);
+
+                //gets humidity
+                humidity = response.main.humidity;
+                humidity = `${humidity} %`;
+                humiditySection.html(humidity);
+
+;
+                //gets Wind Speed
+                windSpeed = response.wind.speed;
+                windSpeed = `${windSpeed} mph`;
+                windSpeedSection.html(windSpeed);
+
+                //gets weather icon
+                icon = response.weather[0].icon;
+                $(".iconWeather").attr("src", `http://openweathermap.org/img/wn/${icon}.png`).attr("alt", response.weather[0].description);
+                
+
+                // for the UV API
+                let uvURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&
+                exclude=&appid=25d3fdfe342a19e8d55725db62d19795`;
+                // `https://api.openweathermap.org/data/2.5/uvi?appid=25d3fdfe342a19e8d55725db62d19795&lat=${lat}&lon=${lon}`;
+                $.ajax({
+                    url: uvURL,
+                    method: "GET"
+                })
+                    .then(function (response) {
+                        console.log(response);
+
+                        //gets UV index and color
+                        uv = response.current.uvi;
+                        uvColor = uviColors(uv);
+                        uvIndexSection.html(uv);
+                        uvIndexSection.attr("style", `background-color: ${uvColor};`);
+
+                        for (let i=1; i<6; i++) {
+                            dailyForecastIcon = response.daily[i].weather[0].icon; 
+                            iconDescription = response.daily[i].weather[0].description;
+                            icon5Day = iconURL.src("http://openweathermap.org/img/wn/${dailyForecastIcon}.png");
+                            // need to create image in each card, find right section and add attr like on line 99
+                        }     
+
+                    });                    
+            });
+    }
+    // function getLocalStorage() {
        
-        weatherInfo = JSON.parse(localStorage.getItem("weatherInfo"));
-        console.log(weatherInfo);
+    //     weatherInfo = JSON.parse(localStorage.getItem("weatherInfo"));
+    //     console.log(weatherInfo);
 
-        if (weatherInfo === null) { 
-            weatherInfo = [];
-        }
-    }
+    //     if (weatherInfo === null) { 
+    //         weatherInfo = [];
+    //     }
+    // }
 
 
 
@@ -162,7 +237,7 @@ $(function () {
         localStorage.clear();
     });
 
-    let townNum=0;
+    
     // add cities to page
     function addCitiesLS(citySearch) {
     
@@ -188,6 +263,7 @@ $(function () {
         mainCity.html(`${cityName} &nbsp (${todaysDate})`);
 
     }
+
 
     // when city in list clicked, populate most recent search on screen
     $(".cityNameinList").on("click", function() {
@@ -221,53 +297,25 @@ $(function () {
                 let LSlistItem = $("<li class='card'>")
                 listofCities.append(LSlistItem);
                 LSlistItem.html(infoArray[i]);
+                     
 
             }
-
+            if (infoArray[0]) {
+                cityName = infoArray[infoArray.length-1];
+                ajaxCallsReload();
+                mainCity.html(`${cityName} &nbsp (${todaysDate})`);
+            }
+            
+            
         }
-    }
-
-    function repopulateInfoToScreen() {
-
-        if (weatherInfo[0]) {
-            // cityName = namesCity[namesCity.length-1];
-            // ajaxCalls();
-
-        mainCity.html(weatherInfo[weatherInfo.length-1].city);
-        tempSection.html(weatherInfo[weatherInfo.length-1].temperature);
-        humiditySection.html(weatherInfo[weatherInfo.length-1].humidityWeather);
-        windSpeedSection.html(weatherInfo[weatherInfo.length-1].windSpeedWeather);
-        // $(".iconWeather").attr("src", `http://openweathermap.org/img/wn/${icon}.png`).attr("alt", iconDescription);
-        uvIndexSection.html(weatherInfo[weatherInfo.length-1].uvi);
-        uvColor = uviColors(uv);
-        uvIndexSection.html(uv);
-        uvIndexSection.attr("style", `background-color: ${uvColor};`);
-        // ajaxUV();
+        if (!infoArray) {
+            cityName = "Boston";
+            ajaxCallsReload();
+            mainCity.html(`${cityName} &nbsp (${todaysDate})`);
         }
-        else {
-            mainCity.html("Please search for a city.")
-        }
-        
-    }
+            
+            
 
-    function ajaxUV() {
-        $.ajax({
-            url: uvURL,
-            method: "GET"
-        })
-            .then(function (response) {
-                console.log(response);
-
-                //gets UV index and color
-                uv = response.current.uvi;
-                uvColor = uviColors(uv);
-                uvIndexSection.html(uv);
-                uvIndexSection.attr("style", `background-color: ${uvColor};`);
-
-                // dailyForecastIcon = response.daily[i].weather[0].icon; 
-                // iconDescription = response.daily[i].weather[i].description;
-                // icon5Day = iconURL.src("http://openweathermap.org/img/wn/${dailyForecastIcon}.png");
-            });
     }
 
 })
