@@ -10,7 +10,7 @@ Parts of Website:
 4. Application stores previously searched for cities in local storage and displays them to the user.
 5. Application loads last searched city forecast on page load.
 
-Challenges: This project helped me understand how to use ajax calls.  It was a challenge at first, as there are nexted ajax calls in this application.  At first I tried to store the weather info in local storage as an array of objects.
+Challenges: This project helped me understand how to use ajax calls.  It was a challenge at first, as there are nested ajax calls in this application.  At first I tried to store the weather info in local storage as an array of objects, but realized that this would not give the user the most recent weather info.  
 
 Here is the link to my application: [View the Weather Dashboard!](https://nkleinmann.github.io/06-Server-Side-APIs-NK/)
 
