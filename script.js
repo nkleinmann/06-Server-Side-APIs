@@ -7,51 +7,25 @@ $(function () {
     const humiditySection = $(".humidity");
     const windSpeedSection = $(".windSpeed");
     const uvIndexSection = $(".uvIndex");
-    // const fiveDayForecast = $(".fiveDayForecast");
-    // const fiveDayIcon = $(".fiveDayIcon")
 
     let townNum=0;
-    // let weatherInfo = [];
+   
     let namesCity=[];
     let blank = "";
 
     let cityName = "";
     let icon = "";
-    // let iconDescription = "";
     let temp = "";
     let humidity = "";
     let windSpeed = "";
     let uv = "";
 
     let uvColor = "";
-    // let dailyForecastIcon = "";
-    // let icon5Day = "";
     let todaysDate = moment().format("L");
 
     //Populates list of 5 most recent cities in local storage on screen
     getCitiesLocalStorage();
-    // getLocalStorage();
-
-    //when screen is refreshed, show weather info from last search
-    // repopulateInfoToScreen();
     
-    
-    
-    
-
-    // //Populates 5 day weather forecast on screen
-    // dailyWeather();
-
-    // function dailyWeather() {
-    //     //gets daily weather
-    //     for (let i = 0; i < 6; i++) {
-    //       fiveDayForecast.value(i+1).append($("<img class='fiveDayIcon card'>"));
-    //       fiveDayIcon.attr("src", `http://openweathermap.org/img/wn/${dailyForecastIcon}.png`).attr("alt", iconDescription);  
-    //       console.log(i);
-    //   }
-
-//   }
-
 
     //When the search button is clicked, call from APIs 
     $(".searchBtn").on("click", function (event) {
@@ -60,6 +34,16 @@ $(function () {
             ajaxCalls();
 
     });
+
+    //This button clears local storage
+    $(".clearBtn").on("click", function () {
+        localStorage.clear();
+    });
+
+     // when city in list clicked, populate most recent search on screen
+     $(".cityNameinList").on("click", function() {
+        console.log("Hi");
+    })
 
     function ajaxCalls() {
         blank = "";
@@ -136,20 +120,6 @@ $(function () {
             });
     }
 
-    // function addWeatherInfoLS() {
-    //     weatherInfoObject = {
-    //         city: cityName,
-    //         iconWeather: icon,
-    //         temperature: temp,
-    //         humidityWeather: humidity,
-    //         windSpeedWeather: windSpeed,
-    //         uvi: uv 
-    //     }
-    //     // console.log(weatherInfoObject);
-    //     weatherInfo.push(weatherInfoObject);
-    //     // console.log(weatherInfo);
-    //     localStorage.setItem("weatherInfo", JSON.stringify(weatherInfo));
-    // }
     function ajaxCallsReload() {
         blank = "";
         // cityName = $("#inputCity").val();
@@ -231,10 +201,7 @@ $(function () {
             });
     }
 
-    //This button clears local storage
-    $(".clearBtn").on("click", function () {
-        localStorage.clear();
-    });
+    
 
     
     // add cities to page
@@ -263,11 +230,6 @@ $(function () {
 
     }
 
-
-    // when city in list clicked, populate most recent search on screen
-    $(".cityNameinList").on("click", function() {
-        console.log("Hi");
-    })
 
     //sets background color for uv
     function uviColors(uv) {
