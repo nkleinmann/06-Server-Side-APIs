@@ -41,8 +41,11 @@ $(function () {
     });
 
      // when city in list clicked, populate most recent search on screen
-     $(".cityNameinList").on("click", function() {
-        console.log("Hi");
+     $("button.buttonCity").on("click", function(event) {
+        event.preventDefault();
+        cityName = $(this).text();
+        ajaxCallsReload();
+        mainCity.html(`${cityName} &nbsp (${todaysDate})`);
     })
 
     function ajaxCalls() {
@@ -122,20 +125,11 @@ $(function () {
 
     function ajaxCallsReload() {
         blank = "";
-        // cityName = $("#inputCity").val();
 
         // clears text in input spot when search button is clicked
         $("#inputCity").val(blank);
 
         let currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=25d3fdfe342a19e8d55725db62d19795";
-
-        // // adding to local storage, taking key to get items
-        //  namesCity = localStorage.getItem("cityNames");
-        //  // taking string from local storage and putting back in original form
-        //  namesCity = JSON.parse(namesCity) || [];
-        //  namesCity.push(citySearch);
-        //  // setting item from array to local storage
-        //  localStorage.setItem("cityNames", JSON.stringify(namesCity));
 
         $.ajax({
             url: currentWeatherURL,
@@ -157,7 +151,6 @@ $(function () {
                 humidity = `${humidity} %`;
                 humiditySection.html(humidity);
 
-;
                 //gets Wind Speed
                 windSpeed = response.wind.speed;
                 windSpeed = `${windSpeed} mph`;
@@ -217,14 +210,16 @@ $(function () {
         localStorage.setItem("cityNames", JSON.stringify(namesCity));
 
         //adds list item to unordered list and adds city names to screen
-        let listItem = $("<li class='card cityNameinList'>");
+        let listItem = $("<li class='cityNameinList'>");
         //adds data-info attribute
-        listItem.attr('data-info', townNum);
-        console.log(townNum);
-        townNum++;
+        let buttonItem = $(`<button class='buttonCity ${cityName}'>`);
+        // listItem.attr('data-info', townNum);
+        // console.log(townNum);
+        // townNum++;
 
         listofCities.append(listItem);
-        listItem.html(cityName);
+        listItem.append(buttonItem);
+        buttonItem.html(cityName);
         //adds most recent city name and today's date to the dashboard
         mainCity.html(`${cityName} &nbsp (${todaysDate})`);
 
@@ -254,11 +249,16 @@ $(function () {
         infoArray = JSON.parse(localStorage.getItem("cityNames"));
         if (infoArray !== null) {
 
-            for (let i = infoArray.length - 5; i < infoArray.length; i++) {
-
-                let LSlistItem = $("<li class='card'>")
-                listofCities.append(LSlistItem);
-                LSlistItem.html(infoArray[i]);
+            for (let i = 0; i < infoArray.length; i++) {
+                let listItem = $("<li class='cityNameinList'>");
+                //adds data-info attribute
+                let buttonItem = $("<button class='buttonCity'>");
+                listofCities.append(listItem);
+                listItem.append(buttonItem);
+                buttonItem.html(infoArray[i]);
+                // let LSlistItem = $("<li class='card'>")
+                // listofCities.append(LSlistItem);
+                // LSlistItem.html();
                      
 
             }
