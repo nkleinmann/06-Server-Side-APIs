@@ -8,7 +8,7 @@ $(function () {
     const windSpeedSection = $(".windSpeed");
     const uvIndexSection = $(".uvIndex");
 
-    let townNum=0;
+   
    
     let namesCity=[];
     let blank = "";
@@ -46,7 +46,7 @@ $(function () {
         cityName = $(this).text();
         ajaxCallsReload();
         mainCity.html(`${cityName} &nbsp (${todaysDate})`);
-    })
+    });
 
     function ajaxCalls() {
         blank = "";
@@ -142,7 +142,7 @@ $(function () {
 
                 //gets temperatur
                 temp = response.main.temp; 
-                temp = Math.floor((temp-273.15)*9/5 + 32);
+                temp = Math.round((temp-273.15)*9/5 + 32);
                 temp = `${temp}`;
                 tempSection.html(temp);
 
