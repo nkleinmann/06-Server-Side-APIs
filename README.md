@@ -2,6 +2,8 @@
 
 Sixth homework for UNH Coding Bootcamp: Weather Dashboard.  I built the dashboard from scratch, starting with creating a basic index.html and then dynamically adding elements to the screen using javascript and adding various styles via css.  I used materialize instead of bootstrap to practice learning a new CSS framework.
 
+Technologies used: HTML, CSS and CSS Framework: Materialize, JaveScript, jQuery, AJAX and API requests  
+
 Parts of Website: 
 
 1. User can search for weather reports by city using the [openweathermap API](https://openweathermap.org/api).
@@ -14,5 +16,9 @@ Challenges: This project helped me understand how to use ajax calls.  It was a c
 
 Here is the link to my application: [View the Weather Dashboard!](https://nkleinmann.github.io/06-Server-Side-APIs-NK/)
 
-Screenshot: 
+Screenshots: 
 ![photo](https://user-images.githubusercontent.com/65608809/89738290-5b71ba80-da45-11ea-8854-e984d9bfda99.jpg)
+
+![weather](https://user-images.githubusercontent.com/65608809/90319656-0bdd3400-df08-11ea-9dbd-568947ba51ae.jpg)
+
+Contact Info: nekleinmann@gmail.com
