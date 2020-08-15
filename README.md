@@ -19,6 +19,6 @@ Here is the link to my application: [View the Weather Dashboard!](https://nklein
 Screenshots: 
 ![photo](https://user-images.githubusercontent.com/65608809/89738290-5b71ba80-da45-11ea-8854-e984d9bfda99.jpg)
 
-![weather](https://user-images.githubusercontent.com/65608809/90319656-0bdd3400-df08-11ea-9dbd-568947ba51ae.jpg)
+![p](https://user-images.githubusercontent.com/65608809/90319679-4777fe00-df08-11ea-9712-1af3de8f8038.jpg)
 
 Contact Info: nekleinmann@gmail.com
