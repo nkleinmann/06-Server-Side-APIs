@@ -22,8 +22,8 @@ h1 {
 
 /*Search box*/
 
-#inputCity {
-    margin: 10px;
+.textInput {
+    /* margin: 10px; */
     background-color: white;
 }
 
